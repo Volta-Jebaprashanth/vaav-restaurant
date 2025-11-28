@@ -189,8 +189,94 @@ const Hero = ({ scrollToMenu }) => (
   </div>
 );
 
+const MenuItemModal = ({ item, onClose }) => {
+  if (!item) return null;
+
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+      <div className="relative bg-zinc-900 rounded-2xl overflow-hidden max-w-2xl w-full border border-zinc-800 shadow-2xl shadow-black/50 animate-fade-in-up">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-md transition-all"
+        >
+          <X size={20} />
+        </button>
+
+        <div className="relative h-64 md:h-80">
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="flex justify-between items-end">
+              <div>
+                {item.popular && (
+                  <span className="inline-flex items-center gap-1 bg-amber-500 text-black text-xs font-bold px-2 py-1 rounded-md mb-2">
+                    <Flame size={12} /> Populaire
+                  </span>
+                )}
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-1">{item.name}</h2>
+                <p className="text-amber-500 font-medium text-lg">{item.category === 'plats' ? 'Plat Indien' : item.category === 'tacos' ? 'French Tacos' : item.category === 'burgers' ? 'Burger Gourmet' : 'Healthy'}</p>
+              </div>
+              <span className="bg-white text-black font-black text-xl px-4 py-2 rounded-full shadow-lg">
+                {item.price}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6 md:p-8">
+          <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            {item.description}
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="bg-black/40 p-4 rounded-xl border border-white/5">
+              <div className="flex items-center gap-2 text-amber-500 mb-2">
+                <Clock size={18} />
+                <span className="font-bold text-sm">Préparation</span>
+              </div>
+              <p className="text-gray-400 text-sm">15-20 minutes</p>
+            </div>
+            <div className="bg-black/40 p-4 rounded-xl border border-white/5">
+              <div className="flex items-center gap-2 text-amber-500 mb-2">
+                <Utensils size={18} />
+                <span className="font-bold text-sm">Allergènes</span>
+              </div>
+              <p className="text-gray-400 text-sm">Gluten, Lactose</p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <a
+              href="tel:+33130735518"
+              className="flex-1 bg-amber-500 hover:bg-amber-400 text-black py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+            >
+              <Phone size={20} />
+              Commander
+            </a>
+            <button
+              onClick={onClose}
+              className="px-6 py-4 rounded-xl font-bold text-white border border-zinc-700 hover:bg-zinc-800 transition-all"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const MenuSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const filteredItems = activeCategory === 'all'
     ? MENU_ITEMS
@@ -245,8 +331,11 @@ const MenuSection = () => {
               </div>
               <div className="p-5">
                 <h3 className="text-xl font-bold text-white mb-2">{item.name}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">{item.description}</p>
-                <button className="w-full py-2 rounded-lg bg-zinc-800 text-white font-medium hover:bg-zinc-700 transition-colors flex items-center justify-center gap-2 text-sm">
+                <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">{item.description}</p>
+                <button
+                  onClick={() => setSelectedItem(item)}
+                  className="w-full py-2 rounded-lg bg-zinc-800 text-white font-medium hover:bg-zinc-700 transition-colors flex items-center justify-center gap-2 text-sm group-hover:bg-amber-500 group-hover:text-black"
+                >
                   Voir détails <ChevronRight size={14} />
                 </button>
               </div>
@@ -254,6 +343,11 @@ const MenuSection = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedItem && (
+        <MenuItemModal item={selectedItem} onClose={() => setSelectedItem(null)} />
+      )}
     </section>
   );
 };
