@@ -144,3 +144,20 @@ After deployment completes:
 - [Live Site](https://volta-jebaprashanth.github.io/vaav-restaurant/)
 - [GitHub Actions](https://github.com/Volta-Jebaprashanth/vaav-restaurant/actions)
 - [GitHub Pages Documentation](https://docs.github.com/en/pages)
+
+## 🌩️ Cloudflare Pages Deployment
+
+You can also deploy this project to Cloudflare Pages for faster global performance.
+
+### Setup Instructions
+
+1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2. Go to **Workers & Pages** > **Create Application** > **Pages** > **Connect to Git**.
+3. Select your repository (`vaav-restaurant`).
+4. Configure the build settings:
+   - **Framework Preset**: `Vite`
+   - **Build Command**: `npm run build`
+   - **Build Output Directory**: `dist`
+5. Click **Save and Deploy**.
+
+The project is already configured to detect Cloudflare Pages and adjust the asset paths automatically.
